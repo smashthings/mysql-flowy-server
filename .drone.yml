@@ -24,7 +24,7 @@ steps:
 - name: Docker Image
   image: smasherofallthings/python-fe
   commands:
-  - docker build -t images.scripted.dog/flowy-servers/standalone:latest -t "images.scripted.dog/flowy-servers/standalone:$$(date '+%Y-%m-%d')-b$${DRONE_BUILD_NUMBER}" . && docker push images.scripted.dog/flowy-servers/standalone --all-tags
+  - docker build -t smasherofallthings/mysql-flowy-server:latest -t "smasherofallthings/mysql-flowy-server:$$(date '+%Y-%m-%d')-b$${DRONE_BUILD_NUMBER}" . && docker push smasherofallthings/mysql-flowy-server --all-tags
   volumes:
   - name: docker-socket
     path: /var/run/docker.sock

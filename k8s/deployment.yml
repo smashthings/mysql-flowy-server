@@ -1,0 +1,24 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: mysql-flowy-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-flowy-server
+  template:
+    metadata:
+      labels:
+        app: mysql-flowy-server
+    spec:
+      imagePullSecrets:
+      - name: regcred
+      containers:
+        - name: mysql-flowy-server
+          image: smasherofallthings/mysql-flowy-server
+          env:
+            - name: DB_DSN
+              value: "{{ dsn }}"
+          ports:
+            - containerPort: 5000
