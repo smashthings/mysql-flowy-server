@@ -15,7 +15,7 @@ Use `docker-compose up` to run all the services needed for local development. Yo
 
 ## Credits & References
 
-suyash - the author of Flowy and the servers that this repo is based on => https://github.com/suyash
-Flowy - the frontend that runs as part of the server => https://github.com/suyash/flowy
-Flowy Servers - the original still available backend servers for flowy that this repo is based on => https://github.com/suyash/flowy-servers
+suyash - the author of Flowy and the servers that this repo is based on => https://github.com/suyash  
+Flowy - the frontend that runs as part of the server => https://github.com/suyash/flowy  
+Flowy Servers - the original still available backend servers for flowy that this repo is based on => https://github.com/suyash/flowy-servers  
 
