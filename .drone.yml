@@ -1,0 +1,45 @@
+kind: pipeline
+type: docker
+name: master
+
+volumes:
+- name: docker-socket
+  host:
+    path: /var/run/docker.sock
+- name: docker-creds
+  host:
+    path: /root/.docker/config.json
+- name: ssh-creds
+  host:
+    path: /root/.ssh/
+
+trigger:
+  branch:
+    - master
+    - pipeline
+  event:
+    - push
+
+steps:
+- name: Docker Image
+  image: smasherofallthings/python-fe
+  commands:
+  - docker build -t images.scripted.dog/flowy-servers/standalone:latest -t "images.scripted.dog/flowy-servers/standalone:$$(date '+%Y-%m-%d')-b$${DRONE_BUILD_NUMBER}" . && docker push images.scripted.dog/flowy-servers/standalone --all-tags
+  volumes:
+  - name: docker-socket
+    path: /var/run/docker.sock
+  - name: docker-creds
+    path: /root/.docker/config.json
+
+- name: Push repo to public repos
+  image: smasherofallthings/debug
+  commands:
+  - git checkout $DRONE_BRANCH
+  - git remote add github git@github.com:smashthings/mysql-flowy-server.git
+  - git push -u github
+  - git remote add gitlab git@gitlab.com:scripteddog/mysql-flowy-server.git
+  - git push -u gitlab
+  volumes:
+  - name: ssh-creds
+    path: /root/.ssh/
+

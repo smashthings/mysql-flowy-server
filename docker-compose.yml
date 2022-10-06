@@ -1,0 +1,55 @@
+# This is for local development
+version: '3.1'
+
+services:
+  db:
+    image: mysql
+    restart: "no"
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: flowy
+    volumes:
+    - ./dev/devDbData:/var/lib/mysql
+    ports:
+     - 3306:3306
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 2s
+      retries: 3
+      start_period: 2s
+
+  adminer:
+    image: adminer
+    restart: "no"
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+
+  server:
+    image: smasherofallthings/python-fe:latest
+    restart: "no"
+    ports:
+      - 5000:5000
+    entrypoint:
+      - /interactive/standalone
+    volumes:
+      - ./bin:/interactive
+    environment:
+      DB_DSN: "root:admin@tcp(db:3306)/flowy"
+    working_dir: "/interactive"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  app:
+    image: images.scripted.dog/flowy
+    restart: "no"
+    ports:
+      - 3000:3000
+    depends_on:
+      db:
+        condition: service_healthy
+      server:
+        condition: service_started
