@@ -17,6 +17,7 @@ spec:
       containers:
         - name: mysql-flowy-server
           image: smasherofallthings/mysql-flowy-server
+          command: ["/usr/local/standalone"]
           env:
             - name: DB_DSN
               value: "{{ dsn }}"
